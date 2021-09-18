@@ -1,4 +1,4 @@
-const webpack = require('webpack');
+const { ProvidePlugin, HotModuleReplacementPlugin } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
@@ -17,11 +17,25 @@ module.exports = {
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader: 'babel-loader'
+                loader: 'esbuild-loader',
+                options: {
+                    loader: 'jsx',
+                    target: 'es2015'
+                }
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader']
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    {
+                        loader: 'esbuild-loader',
+                        options: {
+                            loader: 'css',
+                            minify: true
+                        }
+                    }
+                ]
             }
         ]
     },
@@ -32,7 +46,10 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, './src/index.html')
         }),
-        new webpack.HotModuleReplacementPlugin()
+        new HotModuleReplacementPlugin(),
+        new ProvidePlugin({
+            React: 'react'
+        })
     ],
     devServer: {
         contentBase: path.resolve(__dirname, './dist'),
