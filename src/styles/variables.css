@@ -1,0 +1,12 @@
+:root {
+  /* FONT */
+  --default-font: jetbrains mono, sans-serif;
+
+  /* COLOURS */
+
+  --default-text-color: #ccc;
+
+  /* SIZES */
+
+  --default-font-size: 0.875rem;
+}
